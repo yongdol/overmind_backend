@@ -1,0 +1,95 @@
+num_payment_lump_sum # 일시불 건수
+amnt_payment_lump_sum # 일시불 액수
+
+num_payment_installment # 할부 건수
+amnt_payment_installment # 할부 액수
+
+num_payment_cash_service # 단기카드대출 건수
+amnt_payment_cash_service # 단기카드대출 액수
+
+num_payment_sum # 합계 건수
+amnt_payment_sum # 합계 액수
+
+transactions = {
+	'post_date_time' : tr_post_date_time,
+	'card' : tr_card,
+	'card_type' : tr_card_type,
+	'approval_info' : tr_approval_info,
+	'trans_branch' : branch_info,
+	'payment' : tr_payment,
+	'payment_type' : tr_payment_type,
+	'reception_status' : tr_reception_status,
+	'payment_date' : tr_payment_date,
+	'cancel_info' : tr_cancel_info
+}
+
+approval_info = {
+	'card_type' : aprv_card_type,
+	'card_num' : aprv_card_num,
+	'post_date_time' : aprv_date_time,
+	'payment_type' : aprv_payment_type,
+	'payment' : aprv_payment,
+	'VAT' : aprv_VAT,
+	'tip' : aprv_tip,
+	'approval_number' : aprv_approval_number,
+	'branch_name' : aprv_branch_name,
+	'branch_addr' : aprv_branch_addr,
+	'branch_num' : aprv_branch_num,
+	'corp_regi_num' : aprv_corp_num,
+	'phone_num' : aprv_phone_num
+}
+
+
+'''
+class Crawler(Resource):
+	@jwt_required(scopes=None)
+	def get(self, **kwargs):
+		res = {}
+
+
+		service_id = request.args.get('service_id')
+		user_id = kwargs.get('user_id')
+
+        try:
+            query = """
+                SELECT mand.dsource_id, mand.credcol, cred.cred_value, cred.expires
+                FROM (
+                    SELECT service_id, sd.dsource_id, credcol
+                    FROM service_dsource AS sd
+                    JOIN mand_credcol AS mc
+                    ON sd.dsource_id = mc.dsource_id
+                    WHERE service_id = :service_id
+                    ) AS mand
+                LEFT JOIN (
+                    SELECT user_id, cred_key, cred_value
+                    FROM credential
+                    WHERE user_id = :user_id
+                    ) AS cred
+                ON mand.credcol = cred.cred_key
+            """
+            rows = g.db.execute(text(query), service_id=service_id, user_id=user_id).fetchall()
+
+        except:
+            raise Exception
+
+
+        creds = [dict(i.items()) for i in rows]
+
+        cred_acc_no = ""
+        cred_user_id = ""
+        cred_user_pw = ""
+
+ 
+        for row in creds:
+        	if row['credcol'] == 'cred_acc_no':
+        		cred_acc_no = row['cred_value']
+        	elif row['credcol'] == 'cred_user_id':
+        		cred_user_id = row['cred_value']
+        	elif row['credcol'] == 'cred_user_pw':
+        		cred_user_pw = row['cred_user_pw']
+		
+		#res = make_job_info(cred_acc_no=cred_acc_no, cred_user_id=cred_user_id, cred_user_pw=cred_user_pw)
+
+		return jsonify(res)
+
+'''

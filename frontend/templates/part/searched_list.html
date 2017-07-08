@@ -1,0 +1,16 @@
+<div id=wrapper>
+    <div id=columns>
+        {% for items in data %}
+            {% if search in items['service_name'] %}
+                <div class="pin">
+                    <a href="/service/detail?service_id={{items['id']}}" style="text-decoration: none;">
+                        <img src="{{items['dimg']}}" />
+                        <p class="dtext">{{items['dtext']}}</p>
+                        <p class="service_name">{{items['service_name']}}</p>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+

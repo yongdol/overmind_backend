@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <div class="container">
+        <h1 class='page-header'>My Order</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>ORDER ID</th>
+                <th>SERVICE ID</th>
+                <th>ORDER TIME</th>
+                <th>FINISHED TIME</th>
+                <th>STATUS</th>
+            </tr>
+            {% for items in result %}
+                <tr>
+                    <td><a class="btn btn-default" href="/mypage/purchase/status?order_id={{items['id']}}">{{items['id']}}</a></td>
+                    <td>{{items['service_id']}}</td>
+                    <td>{{items['try_started_at']}}</td>
+                    <td>{{items['try_ended_at']}}</td>
+                    {% if items['status'] == 'complete' %}
+                        <td><a href="/mypage/purchase/report?order_id={{items['id']}}" class="btn btn-primary">보고서보기</a></td>
+                    {% else %}
+                        <td>{{items['status']}}</td>
+                    {% endif %}
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

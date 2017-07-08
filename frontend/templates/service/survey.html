@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	
+	<form action="/service/survey" method="POST">
+	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+		<p>{%if erm%} {{erm}} {%endif%}</p>
+		{{form.industry.label}} {{form.industry()}}
+		<br>
+		{{form.job_class.label}} {{form.job_class()}}
+		<br>
+		{{form.E_type.label}} {{form.E_type()}}
+		<br>
+		{{form.sex.label}} {{form.sex()}}
+		<br>
+		{{form.education.label}} {{form.education()}}
+		<br>
+		{{form.age.label}} {{form.age()}}
+		<br>
+		{{form.duration.label}} {{form.duration()}}
+		<br>
+		{{form.W_type.label}} {{form.W_type()}}
+		<br>
+		{{form.submit()}}
+		<br>
+	</form>
+	
+{% endblock %}

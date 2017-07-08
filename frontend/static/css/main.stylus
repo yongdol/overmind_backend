@@ -1,0 +1,20 @@
+@import 'nib/lib/nib'
+
+.jumbotron
+  text-align center
+.modules
+  display flex
+  flex-wrap wrap
+
+.button
+  background-color 'grey'
+  border none
+  color white
+  padding 3rem 4rem 
+  margin 2rem
+  text-align center
+  text-decoration none
+  display flex
+  align-items center
+  font-size 16px
+  flex-direction column

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+   <h1 class="page-header">About</h1>
+		<table class="table">
+			<tr>
+				<th>SERVICE ID</th>
+                <td>{{data['id']}}</td>
+            </tr>
+            <tr>
+				<th>SERVICE NAME</th>
+                <td>{{data['service_name']}}</td>
+            </tr>
+            <tr>
+				<th>ABOUT</th>
+                <td>{{data['dtext']}}</td>
+            </tr>
+            <tr>
+				<th>REQUIRE</th>
+                <td>{{data['dsource']}}</td>
+            </tr>
+		</table>
+        <div class="thumbnail">
+            <img src="{{data['dimg']}}">
+            <p>{{data['descr']}}</p>
+        </div>
+        <a href="/order?service_id={{data['id']}}" class="btn btn-warning btn-lg btn-block" role="button">BUY</a>
+        <br><br>
+{% endblock %}

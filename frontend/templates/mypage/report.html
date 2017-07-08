@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% block body %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+
+    <div class="container">
+        <h1 class='page-header'>My Report</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>NAME</th>
+                <th>CONTENT</th>
+            </tr>
+            <tr>
+                <td>job_id</td>
+                <td>{{job_id}}</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-8">
+
+            {# Report title #}
+            <h1>{{ title }}</h1>
+
+            {% for data in components %}
+                {# Markdown contents #}
+                {% if data['markdown'] %}
+                    {% for markdown in data['markdown'] %}
+                        {{ markdown | safe }}
+                        <hr>
+                    {% endfor %}
+                {% endif %}
+
+                {# Table contents #}
+                {% if data['table'] %}
+                    {% for table in data['table'] %}
+                        <h2>{{ table.get('title') }}</h2>
+                        <table class="table table-bordered">
+                            <tr>
+                                {% for key in table.get('data')[0].keys() %}
+                                    <th>{{ key }}</th>
+                                {% endfor %}
+                            </tr>
+                            {% for i in range(table.get('len')) %}
+                                <tr>
+                                    {% for values in table.get('data')[0].itervalues() %}
+                                        <td>{{ values[i] }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <hr>
+                    {% endfor %}
+                {% endif %}
+
+                {# Graph contents #}
+                {% if data['graph'] %}
+                    {% for graph in data['graph'] %}
+                        <h2>{{ graph.get('title') }}</h2>
+                        <div id="chart{{ graph.get('index') }}">
+                            <script>
+                                var data = {{ graph.get('data')|tojson }};
+                                var axis = {{ graph.get('axis')|tojson }};
+                                var legend = {{ graph.get('legend')|tojson }};
+                                var point = {{ graph.get('point')|tojson }};
+                                var grid = {{ graph.get('grid')|tojson }};
+                                var chart = c3.generate({
+                                    bindto: "#chart{{ graph.get('index') }}",
+                                    data: data,
+                                    axis: axis,
+                                    legend: legend,
+                                    point: point,
+                                    grid: grid
+                                });
+                            </script>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

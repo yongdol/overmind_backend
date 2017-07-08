@@ -1,0 +1,14 @@
+<div id=wrapper>
+    <div id=columns>
+        {% for items in data %}
+            <div class="pin">
+                <a href="/service/detail?service_id={{items['id']}}" style="text-decoration: none;">
+                    <img src="{{items['dimg']}}" />
+                    <p class="dtext">{{items['dtext']}}</p>
+                    <p class="service_name">{{items['service_name']}}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+

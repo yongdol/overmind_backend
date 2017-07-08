@@ -1,0 +1,33 @@
+image: registry.gitlab.com/sentience-dev/friskweb-api
+
+stages:
+  - build
+  - test
+  - deploy
+
+before_script:
+  - pip install -r requirements.txt
+
+job-build:
+  stage: build
+  script:
+  - python -m py_compile run.py
+  except:
+    - /^issue-.*$/
+  allow_failure: true
+
+job-test:
+  stage: test
+  script:
+  - pytest --pep8 -m pep8 backend/
+  except:
+    - /^issue-.*$/
+  allow_failure: true
+
+job-deploy:
+  stage: deploy
+  script:
+  - cat run.py
+  except:
+  - /^issue-.*$/
+  allow_failure: true

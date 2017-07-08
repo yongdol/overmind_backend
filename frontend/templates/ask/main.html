@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+<br>
+  <div class="form-group panel-body">
+    <form action="/ask/after" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <p>이메일</p>
+      <input class=form-control type="text" name="email">
+        <p>이름</p>
+      <input class=form-control type="text"  name="name">
+        <p>에러메시지</p>
+      <input class=form-control type="text"  name="message" value="{{error}}">
+        <br><br>
+      <button class="btn btn-default" class=form-control type=submit value="submit">제출</button>
+    </form>
+  </div>
+{% endblock %}

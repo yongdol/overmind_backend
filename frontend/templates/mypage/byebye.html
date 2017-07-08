@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="container">
+        <h1 class='page-header'>탈퇴하기</h1>
+        <p>비밀번호를 입력해 주세요</p>
+        <form class="form-class" >
+            <input class="form-control" type="password" name="pw" placeholder="pw">
+            <button class="btn btn-primary" type="submit">제출 </button>
+        </form>
+    </div>
+    <script>
+        $('form').on('submit',function(event) {
+            $.ajax(
+                {
+                    url:'/users/delete',
+                    method:'delete',
+                    data : {
+                        pw:$('input[name="pw"]').val()
+                    },
+                    success: function (d){
+                        window.location.href='/'
+                    }
+                }
+            )
+        })
+    </script>
+{% endblock %}

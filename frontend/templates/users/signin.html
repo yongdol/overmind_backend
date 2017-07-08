@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="panel panel-default">
+        <div class=panel-footer><h1>login</h1></div>
+        <div class="form-group panel-body">
+            <form action="/users/signin" method='post'>
+                {{ form.csrf_token }}
+                {{ form.id.label }}
+                {{ form.id(class_="form-control") }}
+                {{ form.pw.label }}
+                {{ form.pw(class_="form-control") }}
+                <br><br>
+                <button class="btn btn-primary btn-block" class=form-control type=submit value="submit">로그인</button>
+            </form>
+        </div>
+    </div>
+    <a href='/users/signup'><button class="btn btn-warning btn-block">가입하기 </button></a>
+
+{% endblock %}

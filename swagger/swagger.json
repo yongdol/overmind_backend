@@ -1,0 +1,719 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "Friskweb API"
+  },
+  "host": "api.sentience.rocks",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/signin": {
+      "post": {
+        "description": "ID와 비밀번호를 통해 Access Token을 얻습니다",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pw",
+            "in": "query",
+            "description": "User 비밀번호",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string"
+                },
+                "refresh_token": {
+                  "type": "string"
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signup": {
+      "post": {
+        "description": "주어진 ID와 비밀번호로 회원가입을 진행합니다",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pw",
+            "in": "query",
+            "description": "User 비밀번호",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete": {
+      "post": {
+        "description": "회원 탈퇴 요청을 전송합니다",
+        "parameters": [
+          {
+            "name": "pw",
+            "in": "query",
+            "description": "User 비밀번호",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "description": "사용자의 정보를 반환합니다",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/fb": {
+      "post": {
+        "description": "이용자의 페이스북 액세스 토큰을 등록합니다",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Facebook 액세스 토큰",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "rowcounted": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/kftc": {
+      "post": {
+        "description": "KFTC 인증 요청자의 정보를 수신합니다",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "description": "KFTC 인증으로 얻어진 code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "KFTC 토큰 scope",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "client_info",
+            "in": "query",
+            "description": "요청자가 전송하고 싶은 정보",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "client_info내의 redirect_uri로 redirect"
+          }
+        }
+      }
+    },
+    "/auth/list": {
+      "get": {
+        "description": "전체 외부 인증 기관 리스트를 가져옵니다",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/AuthItem"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/status": {
+      "get": {
+        "description": "특정 인증기관에 대한 User의 인증상황을 불러옵니다",
+        "parameters": [
+          {
+            "name": "dsource_id",
+            "in": "query",
+            "description": "인증기관 ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/AuthStatus"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/release": {
+      "post": {
+        "description": "현재 FriskWeb에 등록되어있는 User의 인증정보를 삭제합니다",
+        "parameters": [
+          {
+            "name": "credcol",
+            "in": "query",
+            "description": "삭제하고자 하는 인증정보의 이름",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mypage/purchase": {
+      "get": {
+        "description": "User의 주문내역 리스트를 가져옵니다",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Order"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mypage/purchase/status": {
+      "get": {
+        "description": "특정 주문의 현재 진행상황을 가져옵니다",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "query",
+            "description": "주문 ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/OrderStatus"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mypage/purchase/report": {
+      "get": {
+        "description": "특정 완료된 주문의 보고서를 가져옵니다",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "query",
+            "description": "주문 ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "big_json": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service": {
+      "get": {
+        "description": "FriskWeb의 서비스 리스트를 가져옵니다",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Service"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/detail": {
+      "get": {
+        "description": "특정 서비스에 대한 자세한 정보를 가져옵니다",
+        "parameters": [
+          {
+            "name": "service_id",
+            "in": "query",
+            "description": "서비스 ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Service"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service/suggestion": {
+      "get": {
+        "description": "해당 서비스와 유사한 서비스를 추천합니다",
+        "parameters": [
+          {
+            "name": "service_id",
+            "in": "query",
+            "description": "서비스 ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Service"
+                  }
+                },
+                "e_msg": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/checkout": {
+      "get": {
+        "description": "특정 서비스에 필요한 인증을 받았는지 여부를 확인합니다",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "service_id",
+            "description": "서비스 ID",
+            "type": "integer",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "user_id",
+            "description": "User ID",
+            "type": "integer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Authentication"
+                  }
+                },
+                "e_msg": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/completed": {
+      "post": {
+        "description": "원하는 서비스를 주문합니다",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "service_id",
+            "description": "서비스 ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "service_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "description": "주문 ID",
+                      "type": "integer"
+                    }
+                  }
+                },
+                "e_msg": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AuthItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "acc_type": {
+          "type": "string"
+        },
+        "disp_name": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "credcol": {
+          "type": "string"
+        },
+        "cred_value": {
+          "type": "string"
+        },
+        "expires": {
+          "type": "string"
+        },
+        "acc_type": {
+          "type": "string"
+        },
+        "disp_name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "service_id": {
+          "type": "string"
+        },
+        "last_e_msg": {
+          "description": "current status(FINISHED,..)",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "try_ended_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "try_started_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "OrderStatus": {
+      "type": "object",
+      "properties": {
+        "job_id": {
+          "type": "string"
+        },
+        "e_msg": {
+          "type": "string"
+        },
+        "step_id": {
+          "type": "string"
+        },
+        "step_class_name": {
+          "type": "string"
+        },
+        "tb_msg": {
+          "type": "string"
+        },
+        "step_co_name": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dimg": {
+          "description": "data image",
+          "type": "string"
+        },
+        "descr": {
+          "description": "describe",
+          "type": "string"
+        },
+        "service_name": {
+          "description": "service name",
+          "type": "string"
+        },
+        "dtext": {
+          "description": "service informaton",
+          "type": "string"
+        },
+        "dsource": {
+          "description": "service id",
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        }
+      }
+    },
+    "Authentication": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "credcol": {
+          "type": "string"
+        },
+        "expires": {
+          "type": "string"
+        },
+        "cred_value": {
+          "type": "string"
+        },
+        "dsource_id": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

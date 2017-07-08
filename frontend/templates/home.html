@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<link rel=stylesheet type=text/css href=/static/css/sub.css>
+      {% with data = data %}
+        {% if search %}
+          {% include "/part/searched_list.html" %}
+        {% else %} 
+          {% include "/part/list.html" %}
+        {% endif %}
+      {% endwith %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <div class="container">
+        <h1 class='page-header'>My Authorization Detail</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>NAME</th>
+                <th>TYPE</th>
+                <th>KEY</th>
+                <th>EXPIRES</th>
+                <th>ACTION</th>
+            </tr>
+            {% for items in data %}
+                <tr>
+                    <td>{{items['disp_name']}}</td>
+                    <td>{{items['acc_type']}}</td>
+                    <td>{{items['credcol']}}</td>
+                    <td>{{items['expires']}}</td>
+                    {% if items['status']=='OK' %}
+                        <td>{{items['status']}}</td>
+                    {% else %}
+                        <td><a href=:{{items['redirect']}}" class="btn btn-primary" role="button">{{items['status']}}</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+{% endblock %}

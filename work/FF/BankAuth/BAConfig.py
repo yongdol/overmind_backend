@@ -1,0 +1,2 @@
+GET_PRVKEY_URL="http://172.31.40.238:8081/get-prvkey"
+DEFAULT_RETRY_COUNT = 1

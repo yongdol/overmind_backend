@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <div class="container">
+        <h1 class='page-header'>My Authorization</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>NAME</th>
+                <th>TYPE</th>
+                <th>ACTION</th>
+            </tr>
+            {% for items in data %}
+                <tr>
+                    <td>{{items['disp_name']}}</td>
+                    <td>{{items['acc_type']}}</td>
+                    <td><a href="/auth/status?dsource_id={{items['id']}}" class="btn btn-default" role="button">상태보기</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

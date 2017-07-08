@@ -1,0 +1,48 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">HOME</a>
+            {% if session['access_token'] %}
+                <a class="navbar-brand" href="/mypage">mypage</a>
+                <a class="navbar-brand" href='/users/signout'>logout</a>
+{#                <a class="navbar-brand">#}
+{#                <span class="alert alert-info" id="access_token" style="visibility:none;"> {{ session['access_token'] }} </span>#}
+{#                </a>#}
+            {% else %}
+                <a class="navbar-brand" href='/users/signin'>login</a>
+                <a class="navbar-brand" href="/users/signup">signup</a>
+            {% endif %}
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-right" action='/?search='+getSearchInput()>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search" name='search'>
+                </div>
+                <button type="submit" class="btn btn-default">go</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<script>
+    function getSearchInput() {
+        return $('input[name="search"]').val()
+    }
+{#    function getName() {#}
+{#       $.ajax(#}
+{#        {#}
+{#          url:'/api/auth/me',#}
+{#          method:'get',#}
+{#          headers: {#}
+{#            Authorization : `JWT ${$('#access_token').text().trim()}`#}
+{#          }#}
+{#        }#}
+{#      ).done( (data) => {#}
+{#        $('#access_token').text("hello, " + data.data.name +"!")#}
+{#        .css('display','inline')#}
+{#        }#}
+{#      )#}
+{#    }#}
+{#    $( getName() )#}
+</script>
